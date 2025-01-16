@@ -126,7 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AppScaffoldClient(
-                                    bodyContent: ProductListScreenClient(),
+                                    bodyContent: ProductListScreenClient(
+                                      subcategoryId: null,
+                                    ),
                                   ),
                                 ),
                               );

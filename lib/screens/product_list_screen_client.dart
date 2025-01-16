@@ -4,10 +4,21 @@ import '../controllers/product_controller.dart';
 import 'product_details_screen.dart';
 
 class ProductListScreenClient extends StatelessWidget {
+  int? subcategoryId;
+
+  ProductListScreenClient({super.key, required this.subcategoryId}) {
+    subcategoryId = subcategoryId;
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = Provider.of<ProductController>(context, listen: false);
-    controller.loadProducts();
+
+    if (subcategoryId != null) {
+      controller.loadProductsBySubcategory(subcategoryId);
+    } else {
+      controller.loadProducts();
+    }
 
     return Consumer<ProductController>(
       builder: (context, controller, child) {
@@ -91,3 +102,4 @@ class ProductListScreenClient extends StatelessWidget {
     );
   }
 }
+

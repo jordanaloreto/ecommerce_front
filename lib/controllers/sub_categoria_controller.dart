@@ -18,6 +18,16 @@ class SubCategoriaController extends ChangeNotifier {
     }
   }
 
+  Future<List<SubCategoria>> fetchSubCategories() async {
+    try {
+      return await _service
+          .getSubCategorias(); // Obtém as subcategorias do serviço
+    } catch (e) {
+      print('Error loading subcategories: $e'); // Imprime o erro no console
+      return [];
+    }
+  }
+
   // Função para adicionar um novo produto
   Future<void> addSubCategoria(SubCategoria subCategoria) async {
     try {

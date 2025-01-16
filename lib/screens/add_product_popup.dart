@@ -14,12 +14,15 @@ class _AddProductPopupState extends State<AddProductPopup> {
   final _formKey = GlobalKey<FormState>();
   String _name = '';
   double _price = 0.0;
-  SubCategoria? _selectedSubCategoria;
-
- @override
+  SubCategoria? _selectedSubCategory;
+  // _AddProductPopupState(){
+  //   Provider.of<SubCategoriaController>(context).loadSubCategorias();
+  // }
+  @override
   Widget build(BuildContext context) {
-    final subCategorias =
+    final subCategories =
         Provider.of<SubCategoriaController>(context).subCategorias;
+
     return AlertDialog(
       title: Text('Adicionar Produto'),
       content: Form(
@@ -54,15 +57,15 @@ class _AddProductPopupState extends State<AddProductPopup> {
             ),
             DropdownButtonFormField<SubCategoria>(
               decoration: InputDecoration(labelText: 'Subcategoria'),
-              items: subCategorias.map((subCategoria) {
+              items: subCategories.map((subCategory) {
                 return DropdownMenuItem<SubCategoria>(
-                  value: subCategoria,
-                  child: Text(subCategoria.name),
+                  value: subCategory,
+                  child: Text(subCategory.name),
                 );
               }).toList(),
               onChanged: (value) {
                 setState(() {
-                  _selectedSubCategoria = value;
+                  _selectedSubCategory = value;
                 });
               },
               validator: (value) {
@@ -88,11 +91,11 @@ class _AddProductPopupState extends State<AddProductPopup> {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               final newProduct = Product(
-              id: 0, 
-              name: _name, 
-              price: _price,
-              subCategoriaId: _selectedSubCategoria!.id,
-              subCategoria: _selectedSubCategoria!,
+                id: 0,
+                name: _name,
+                price: _price,
+                subCategoriaId: _selectedSubCategory!.id,
+                subCategoria: _selectedSubCategory!,
               );
               Provider.of<ProductController>(context, listen: false)
                   .addProduct(newProduct);

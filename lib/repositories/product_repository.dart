@@ -47,6 +47,24 @@ class ProductRepository {
     }
   }
 
+  Future<List<Product>> fetchProductsBySubcategory(int? subcategoryId) async {
+    final headers = await _getHeaders();
+    final response = await http.get(
+      Uri.parse('$baseUrl/products/subcategory/$subcategoryId'),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(response.body);
+      return body.map((item) => Product.fromJson(item)).toList();
+    } else if (response.statusCode == 401) {
+      _handleUnauthorized(); // Trata o erro 401
+      throw Exception('Unauthorized');
+    } else {
+      throw Exception('Failed to load products');
+    }
+  }
+
   Future<Product> createProduct(Product product) async {
     final headers = await _getHeaders();
     final response = await http.post(

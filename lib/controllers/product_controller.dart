@@ -18,6 +18,15 @@ class ProductController extends ChangeNotifier {
     }
   }
 
+  Future<void> loadProductsBySubcategory(int? subcategory) async {
+    try {
+      _products = await _service.getProductsBySubcategory(subcategory);
+      notifyListeners();
+    } catch (e) {
+      print('Error loading products: $e');
+    }
+  }
+
   // Função para adicionar um novo produto
   Future<void> addProduct(Product product) async {
     try {
