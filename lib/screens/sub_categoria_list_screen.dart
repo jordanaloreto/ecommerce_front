@@ -1,3 +1,4 @@
+import 'package:ecommerce_front/controllers/categoria_controller.dart';
 import 'package:ecommerce_front/controllers/sub_categoria_controller.dart';
 import 'package:ecommerce_front/screens/add_sub_categoria_popup.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,10 @@ class SubCategoriaListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final controller = Provider.of<SubCategoriaController>(context, listen: false);
-    controller.loadSubCategorias(); 
+    final controller =
+        Provider.of<SubCategoriaController>(context, listen: false);
+    controller.loadSubCategorias();
+    Provider.of<CategoriaController>(context, listen: false).loadCategorias;
     return Stack(
       children: [
         Consumer<SubCategoriaController>(
