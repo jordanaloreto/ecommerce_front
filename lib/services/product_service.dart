@@ -19,4 +19,9 @@ class ProductService {
   Future<void> removeProduct(int id) {
     return _repository.deleteProduct(id);
   }
+
+  Future<Product> editProduct(Product product) {
+    return _repository.updateProduct(product);
+  }
+
 }

@@ -49,4 +49,18 @@ class ProductController extends ChangeNotifier {
       print('Error deleting product: $e');
     }
   }
+
+  Future<void> updateProduct(Product product) async {
+    try {
+      final updatedProduct = await _service.editProduct(product);
+      final index = _products.indexWhere((p) => p.id == product.id);
+      if (index != -1) {
+        _products[index] = updatedProduct;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error updating product: $e');
+    }
+  }
+
 }

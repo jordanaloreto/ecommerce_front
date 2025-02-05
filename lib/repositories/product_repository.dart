@@ -99,4 +99,23 @@ class ProductRepository {
       throw Exception('Failed to delete product');
     }
   }
+
+  Future<Product> updateProduct(Product product) async {
+    final headers = await _getHeaders();
+    final response = await http.put(
+      Uri.parse('$baseUrl/product/${product.id}'),
+      headers: headers,
+      body: jsonEncode(product.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return Product.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401) {
+      _handleUnauthorized();
+      throw Exception('Unauthorized');
+    } else {
+      throw Exception('Failed to update product');
+    }
+  }
+
 }
