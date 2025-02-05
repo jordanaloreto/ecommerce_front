@@ -15,4 +15,9 @@ class CategoriaService {
   Future<void> removeCategoria(int id) {
     return _repository.deleteCategoria(id);
   }
+
+  Future<void> updateCategoria(Categoria categoria) {
+  return _repository.updateCategoria(categoria);
+}
+
 }

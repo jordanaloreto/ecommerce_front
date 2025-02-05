@@ -83,4 +83,23 @@ class CategoriaRepository {
       throw Exception('Failed to delete categoria');
     }
   }
+
+  Future<Categoria> updateCategoria(Categoria categoria) async {
+  final headers = await _getHeaders();
+  final response = await http.put(
+    Uri.parse('$baseUrl/categoria/${categoria.id}'),
+    headers: headers,
+    body: jsonEncode(categoria.toJson()),
+  );
+
+  if (response.statusCode == 200) {
+    return Categoria.fromJson(jsonDecode(response.body));
+  } else if (response.statusCode == 401) {
+    _handleUnauthorized();
+    throw Exception('Unauthorized');
+  } else {
+    throw Exception('Failed to update categoria');
+  }
+}
+
 }
