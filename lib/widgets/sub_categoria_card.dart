@@ -1,6 +1,7 @@
 import 'package:ecommerce_front/models/sub_categoria.dart';
 import 'package:flutter/material.dart';
 import '../controllers/sub_categoria_controller.dart';
+import '../screens/add_sub_categoria_popup.dart';
 import 'package:provider/provider.dart';
 
 // Widget que exibe os detalhes de uma subcategoria em um cartão (Card)
@@ -21,14 +22,28 @@ class SubCategoriaCard extends StatelessWidget {
           'Categoria: ${subCategoria.categoria.name}', // Nome da categoria associada
           style: TextStyle(color: Colors.grey[600]), // Cor cinza para o texto
         ),
-        // Botão de deletar subcategoria no canto direito do cartão
-        trailing: IconButton(
-          icon: Icon(Icons.delete), // Ícone de lixeira
-          onPressed: () {
-            // Ao pressionar, chama o método de remoção do SubCategoriaController
-            Provider.of<SubCategoriaController>(context, listen: false)
-                .removeSubCategoria(subCategoria.id);
-          },
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(Icons.edit, color: Colors.blue), // Ícone de edição
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AddSubCategoriaPopup(subCategoria: subCategoria);
+                  },
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.delete, color: Colors.red), // Ícone de lixeira
+              onPressed: () {
+                Provider.of<SubCategoriaController>(context, listen: false)
+                    .removeSubCategoria(subCategoria.id);
+              },
+            ),
+          ],
         ),
       ),
     );

@@ -17,4 +17,9 @@ class SubCategoriaService {
   Future<void> removeSubCategoria(int id) {
     return _repository.deleteSubCategoria(id);
   }  
+
+  // Método para atualizar uma subcategoria
+  Future<SubCategoria> updateSubCategoria(SubCategoria subCategoria) async {
+    return _repository.updateSubCategoria(subCategoria);
+  }
 }

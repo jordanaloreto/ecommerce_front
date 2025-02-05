@@ -82,4 +82,23 @@ class SubCategoriaRepository {
       throw Exception('Failed to delete subCategoria');
     }
   }
+
+  Future<SubCategoria> updateSubCategoria(SubCategoria subCategoria) async {
+    final headers = await _getHeaders();
+    final response = await http.put(
+      Uri.parse('$baseUrl/subcategories/${subCategoria.id}'),
+      headers: headers,
+      body: jsonEncode(subCategoria.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return SubCategoria.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401) {
+      _handleUnauthorized();
+      throw Exception('Unauthorized');
+    } else {
+      throw Exception('Failed to update subCategoria');
+    }
+  }
+
 }

@@ -50,4 +50,18 @@ class SubCategoriaController extends ChangeNotifier {
       print('Error deleting subCategoria: $e');
     }
   }
+
+  // Método para atualizar uma subcategoria
+  Future<void> updateSubCategoria(SubCategoria subCategoria) async {
+    try {
+      final updatedSubCategoria = await _service.updateSubCategoria(subCategoria);
+      final index = _subCategorias.indexWhere((sc) => sc.id == subCategoria.id);
+      if (index != -1) {
+        _subCategorias[index] = updatedSubCategoria;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error updating subCategoria: $e');
+    }
+  }
 }

@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddSubCategoriaPopup extends StatefulWidget {
+  final SubCategoria? subCategoria;
+
+  AddSubCategoriaPopup({this.subCategoria});
+
   @override
   _AddSubCategoriaPopupState createState() => _AddSubCategoriaPopupState();
 }
@@ -16,17 +20,32 @@ class _AddSubCategoriaPopupState extends State<AddSubCategoriaPopup> {
   Categoria? _selectedCategoria;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.subCategoria != null) {
+      _name = widget.subCategoria!.name;
+      _selectedCategoria = widget.subCategoria!.categoria;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final categories = Provider.of<CategoriaController>(context).categorias;
 
+    // Ensure _selectedCategoria is in the categories list
+    if (_selectedCategoria != null && !categories.contains(_selectedCategoria)) {
+      _selectedCategoria = null;
+    }
+
     return AlertDialog(
-      title: Text('Adicionar Subcategoria'),
+      title: Text(widget.subCategoria == null ? 'Adicionar Subcategoria' : 'Editar Subcategoria'),
       content: Form(
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
+              initialValue: _name,
               decoration: InputDecoration(labelText: 'Nome da Subcategoria'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -40,6 +59,7 @@ class _AddSubCategoriaPopupState extends State<AddSubCategoriaPopup> {
             ),
             DropdownButtonFormField<Categoria>(
               decoration: InputDecoration(labelText: 'Categoria'),
+              value: _selectedCategoria,
               items: categories.map((category) {
                 return DropdownMenuItem<Categoria>(
                   value: category,
@@ -69,18 +89,23 @@ class _AddSubCategoriaPopupState extends State<AddSubCategoriaPopup> {
           },
         ),
         TextButton(
-          child: Text('Adicionar'),
+          child: Text(widget.subCategoria == null ? 'Adicionar' : 'Salvar'),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
               final newSubCategoria = SubCategoria(
-                id: 0,
+                id: widget.subCategoria?.id ?? 0,
                 name: _name,
                 categoriaId: _selectedCategoria!.id,
-                categoria: _selectedCategoria!
+                categoria: _selectedCategoria!,
               );
-              Provider.of<SubCategoriaController>(context, listen: false)
-                  .addSubCategoria(newSubCategoria);
+              
+              final subCategoriaController = Provider.of<SubCategoriaController>(context, listen: false);
+              if (widget.subCategoria == null) {
+                subCategoriaController.addSubCategoria(newSubCategoria);
+              } else {
+                subCategoriaController.updateSubCategoria(newSubCategoria);
+              }
               Navigator.of(context).pop();
             }
           },
