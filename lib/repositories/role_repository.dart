@@ -60,4 +60,20 @@ class RoleRepository {
       throw Exception('Failed to delete role');
     }
   }
+
+  // Função para atualizar uma role existente
+  Future<Role> updateRole(Role role) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/role/${role.id}'), // Endpoint para atualizar a role
+      headers: await _getHeaders(),
+      body: jsonEncode(role.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return Role.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update role');
+    }
+  }
+
 }

@@ -40,4 +40,18 @@ class RoleController extends ChangeNotifier {
       print('Error deleting role: $e');
     }
   }
+
+  // Função para atualizar uma role existente
+  Future<void> updateRole(Role role) async {
+    try {
+      final updatedRole = await _service.updateRole(role);
+      final index = _roles.indexWhere((r) => r.id == role.id);
+      if (index != -1) {
+        _roles[index] = updatedRole;
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error updating role: $e');
+    }
+  }
 }

@@ -20,4 +20,9 @@ class RoleService {
   Future<void> removeRole(int id) async {
     return await _repository.deleteRole(id);
   }
+
+  // Função para atualizar uma role existente
+  Future<Role> updateRole(Role role) async {
+    return await _repository.updateRole(role);
+  }
 }
