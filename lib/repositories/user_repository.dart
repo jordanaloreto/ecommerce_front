@@ -39,7 +39,7 @@ class UserRepository {
   // Função para criar uma nova subcategoria
   Future<User> createUser(User user) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/user/save'),
+      Uri.parse('$baseUrl/users/save'),
       headers: await _getHeaders(),
       body: jsonEncode(user.toJson()),
     );
@@ -60,4 +60,19 @@ class UserRepository {
       throw Exception('Failed to delete user');
     }
   }
+
+  Future<User> updateUser(int id, User user) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/users/$id'),
+      headers: await _getHeaders(),
+      body: jsonEncode(user.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update user');
+    }
+  }
+
 }

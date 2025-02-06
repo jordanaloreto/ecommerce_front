@@ -7,6 +7,10 @@ import '../models/role.dart';
 import '../models/user.dart';
 
 class AddUserPopup extends StatefulWidget {
+  final User? user;
+
+  AddUserPopup({this.user});
+
   @override
   _AddUserPopupState createState() => _AddUserPopupState();
 }
@@ -18,43 +22,51 @@ class _AddUserPopupState extends State<AddUserPopup> {
   Role? _selectedRole;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.user != null) {
+      _name = widget.user!.userName;
+      _password = widget.user!.password;
+
+      // Aguarda o carregamento dos roles antes de definir o _selectedRole
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final roles = Provider.of<RoleController>(context, listen: false).roles;
+        setState(() {
+          _selectedRole = roles.firstWhere(
+            (role) => role.id == widget.user!.roleId,
+          );
+        });
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final roles =
-        Provider.of<RoleController>(context).roles;
+    final roles = Provider.of<RoleController>(context).roles;
 
     return AlertDialog(
-      title: Text('Adicionar User'),
+      title: Text(widget.user == null ? 'Adicionar User' : 'Editar User'),
       content: Form(
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
+              initialValue: _name,
               decoration: InputDecoration(labelText: 'Nome do User'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Informe o nome do User';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _name = value!;
-              },
+              validator: (value) => value == null || value.isEmpty ? 'Informe o nome do User' : null,
+              onSaved: (value) => _name = value!,
             ),
             TextFormField(
+              initialValue: _password,
               decoration: InputDecoration(labelText: 'Senha'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Informe a Senha';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _password = value!;
-              },
+              obscureText: true,
+              validator: (value) => value == null || value.isEmpty ? 'Informe a Senha' : null,
+              onSaved: (value) => _password = value!,
             ),
             DropdownButtonFormField<Role>(
               decoration: InputDecoration(labelText: 'Role'),
+              value: roles.contains(_selectedRole) ? _selectedRole : null,
               items: roles.map((role) {
                 return DropdownMenuItem<Role>(
                   value: role,
@@ -66,12 +78,7 @@ class _AddUserPopupState extends State<AddUserPopup> {
                   _selectedRole = value;
                 });
               },
-              validator: (value) {
-                if (value == null) {
-                  return 'Selecione uma role';
-                }
-                return null;
-              },
+              validator: (value) => value == null ? 'Selecione uma role' : null,
             ),
           ],
         ),
@@ -84,19 +91,32 @@ class _AddUserPopupState extends State<AddUserPopup> {
           },
         ),
         TextButton(
-          child: Text('Adicionar'),
+          child: Text(widget.user == null ? 'Adicionar' : 'Atualizar'),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
-              final newUser = User(
-                id: 0,
-                userName: _name,
-                password: _password,
-                roleId: _selectedRole!.id,
-                role: _selectedRole!,
-              );
-              Provider.of<UserController>(context, listen: false)
-                  .addUser(newUser);
+
+              final userController = Provider.of<UserController>(context, listen: false);
+
+              if (widget.user == null) {
+                final newUser = User(
+                  id: DateTime.now().millisecondsSinceEpoch,
+                  userName: _name,
+                  password: _password,
+                  roleId: _selectedRole!.id,
+                  role: _selectedRole!,
+                );
+                userController.addUser(newUser);
+              } else {
+                final updatedUser = User(
+                  id: widget.user!.id,
+                  userName: _name,
+                  password: _password,
+                  roleId: _selectedRole!.id,
+                  role: _selectedRole!,
+                );
+                userController.updateUser(updatedUser.id, updatedUser);
+              }
               Navigator.of(context).pop();
             }
           },

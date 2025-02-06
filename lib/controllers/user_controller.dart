@@ -42,4 +42,18 @@ class UserController extends ChangeNotifier {
       print('Error deleting user: $e'); // Imprime o erro no console
     }
   }
+
+  Future<void> updateUser(int id, User user) async {
+      try {
+        final updatedUser = await _service.updateUser(id, user);
+        int index = _users.indexWhere((u) => u.id == id);
+        if (index != -1) {
+          _users[index] = updatedUser;
+          notifyListeners();
+        }
+      } catch (e) {
+        print('Error updating user: $e');
+      }
+    }
+
 }

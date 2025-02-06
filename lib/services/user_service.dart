@@ -19,4 +19,8 @@ class UserService {
   Future<void> removeUser(int id) async {
     return await _repository.deleteUser(id);
   }
+
+  Future<User> updateUser(int id, User user) async {
+    return await _repository.updateUser(id, user);
+  }
 }
