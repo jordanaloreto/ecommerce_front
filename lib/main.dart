@@ -1,3 +1,4 @@
+import 'package:ecommerce_front/controllers/question_controller.dart';
 import 'package:ecommerce_front/controllers/user_controller.dart';
 import 'package:ecommerce_front/screens/login_screen.dart';
 import 'controllers/cart_controller.dart';
@@ -26,6 +27,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => LoginController()),
         ChangeNotifierProvider(create: (_) => CartController()),
         ChangeNotifierProvider(create: (_) => OrderController()),
+        ChangeNotifierProvider(create: (_) => QuestionController()),
       ],
       child: MyApp(),
     ),

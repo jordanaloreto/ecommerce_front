@@ -1,4 +1,3 @@
-// Importa as telas necessárias para navegação no aplicativo
 import 'package:ecommerce_front/screens/categoria_list_screen.dart';
 import 'package:ecommerce_front/screens/login_screen.dart';
 import 'package:ecommerce_front/screens/product_list_screen_adm.dart';
@@ -7,34 +6,26 @@ import 'package:ecommerce_front/screens/sub_categoria_list_screen.dart';
 import 'package:ecommerce_front/screens/user_list_screen.dart';
 import 'package:flutter/material.dart';
 
-// Classe AppScaffold, que define a estrutura básica do aplicativo
+import '../screens/admin_question_list_screen.dart';
+
 class AppScaffoldAdm extends StatelessWidget {
-  // Define o conteúdo principal da tela que será exibido no corpo
   final Widget bodyContent;
 
-  // Construtor da classe AppScaffold que recebe o conteúdo principal como parâmetro
   AppScaffoldAdm({required this.bodyContent});
 
   @override
   Widget build(BuildContext context) {
-    // Retorna a estrutura Scaffold, que é a base da tela
     return Scaffold(
-      // Configuração da AppBar na parte superior da tela
       appBar: AppBar(
-        title: Text("Product App"), // Define o título do app bar
+        title: Text("Product App"),
         actions: [
-          // Exibe o avatar do usuário e um menu suspenso (PopupMenuButton) no app bar
           Row(
             children: [
-              // CircleAvatar para mostrar a imagem do usuário
               CircleAvatar(
-                backgroundImage: AssetImage(
-                    "assets/images/10771017.png"), // Imagem do usuário no avatar
+                backgroundImage: AssetImage("assets/images/10771017.png"),
               ),
-              SizedBox(width: 8), // Espaçamento entre o avatar e o menu
-              // PopupMenuButton que exibe um menu ao clicar
+              SizedBox(width: 8),
               PopupMenuButton<String>(
-                // Função chamada quando uma opção é selecionada
                 onSelected: (value) {
                   if (value == 'logout') {
                     Navigator.pushReplacement(
@@ -45,44 +36,34 @@ class AppScaffoldAdm extends StatelessWidget {
                     );
                   }
                 },
-                // Define os itens do menu suspenso
                 itemBuilder: (BuildContext context) {
                   return [
-                    // Item do menu para Logout
                     PopupMenuItem<String>(
-                      value: 'logout', // Valor associado à opção
-                      child: Text('Logout'), // Texto exibido para o item
+                      value: 'logout',
+                      child: Text('Logout'),
                     ),
                   ];
                 },
-                // Texto exibido no botão do menu suspenso
-                child: Text("Nome do Usuário"), // Nome do usuário na AppBar
+                child: Text("Nome do Usuário"),
               ),
             ],
           ),
         ],
       ),
-      // Configuração do Drawer, que é um menu lateral
       drawer: Drawer(
-        // Define a lista de itens que aparecerão no drawer
         child: ListView(
-          padding: EdgeInsets.zero, // Remove o padding padrão
+          padding: EdgeInsets.zero,
           children: [
-            // Cabeçalho do drawer
             DrawerHeader(
               child: Text(
-                'Menu', // Título do drawer
-                style: TextStyle(
-                    color: Colors.white, fontSize: 24), // Estilo do texto
+                'Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
               ),
-              decoration: BoxDecoration(
-                  color: Colors.blue), // Cor de fundo do cabeçalho do drawer
+              decoration: BoxDecoration(color: Colors.blue),
             ),
-            // Item de lista para navegação até a tela de produtos
             ListTile(
-              title: Text('Produtos'), // Título do item "Produtos"
+              title: Text('Produtos'),
               onTap: () {
-                // Navega para a tela de lista de produtos ao selecionar o item
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -92,11 +73,9 @@ class AppScaffoldAdm extends StatelessWidget {
                 );
               },
             ),
-            // Item de lista para navegação até a tela de categorias
             ListTile(
-              title: Text('Categorias'), // Título do item "Categorias"
+              title: Text('Categorias'),
               onTap: () {
-                // Navega para a tela de lista de categorias ao selecionar o item
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -107,9 +86,8 @@ class AppScaffoldAdm extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Subcategorias'), // Título do item "Categorias"
+              title: Text('Subcategorias'),
               onTap: () {
-                // Navega para a tela de lista de categorias ao selecionar o item
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -120,9 +98,8 @@ class AppScaffoldAdm extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Perfil'), // Título do item "Categorias"
+              title: Text('Perfil'),
               onTap: () {
-                // Navega para a tela de lista de categorias ao selecionar o item
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -133,9 +110,8 @@ class AppScaffoldAdm extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Usuário'), // Título do item "Categorias"
+              title: Text('Usuário'),
               onTap: () {
-                // Navega para a tela de lista de categorias ao selecionar o item
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -145,11 +121,22 @@ class AppScaffoldAdm extends StatelessWidget {
                 );
               },
             ),
-            // Outros itens do menu podem ser adicionados aqui
+            // Nova opção para acessar perguntas
+            ListTile(
+              title: Text('Perguntas'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        AppScaffoldAdm(bodyContent: AdminQuestionsListScreen()),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
-      // Define o conteúdo principal da tela
       body: bodyContent,
     );
   }

@@ -1,4 +1,5 @@
 import 'package:ecommerce_front/controllers/cart_controller.dart';
+import 'package:ecommerce_front/screens/ask_question_screen.dart';
 import 'package:ecommerce_front/utils/app_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -112,6 +113,17 @@ class ProductDetailsScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AskQuestionScreen(productId: product.id),
+                                  ),
+                                );
+                              },
+                              child: Text("Ver Perguntas e Respostas"),
                             ),
                           ],
                         ),
