@@ -13,7 +13,7 @@ class _AdminQuestionsListScreenState extends State<AdminQuestionsListScreen> {
   void initState() {
     super.initState();
     final controller = Provider.of<QuestionController>(context, listen: false);
-    controller.loadQuestions(0); // 0 ou outro valor para carregar todas as perguntas
+    controller.loadAllQuestions(); // 0 ou outro valor para carregar todas as perguntas
   }
 
   @override

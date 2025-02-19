@@ -24,6 +24,19 @@ class QuestionController with ChangeNotifier {
       notifyListeners();
     }
   }
+  Future<void> loadAllQuestions() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _questions = await _service.getQuestions();
+    } catch (e) {
+      print('Erro ao carregar perguntas: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
   Future<void> addQuestion(Question question) async {
     try {

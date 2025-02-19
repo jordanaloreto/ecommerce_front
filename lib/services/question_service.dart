@@ -8,6 +8,9 @@ class QuestionService {
   Future<List<Question>> getQuestionsByProduct(int productId) async {
     return await _repository.getQuestionsByProduct(productId);
   }
+  Future<List<Question>> getQuestions() async {
+    return await _repository.getQuestions();
+  }
 
   Future<Question> createQuestion(Question question) async {
     return await _repository.createQuestion(question);
