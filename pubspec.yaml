@@ -16,6 +16,7 @@ dependencies:
   http: ^1.2.2
   get_storage: ^2.1.1
   dart_jsonwebtoken: ^2.14.2
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:
